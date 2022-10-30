@@ -1,3 +1,4 @@
+from turtle import width
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
@@ -8,6 +9,12 @@ def C(va):
     taylor = []
     taylor = Taylor(float(tt1.get()), float(va1.get()), float(tt2.get()), float(va2.get()))
 
+    resistMat = 450#float(resistMat.get()) #450 é para o aço 1045
+
+    for material, tensao in listaDeMateriais:
+        if(str(material) == str(tipoMaterial.get())):
+            resistMat = int(tensao)
+
     pf = 1000
     L = float(comprimento.get())
     x = taylor[0]
@@ -16,10 +23,9 @@ def C(va):
     ce = 5
     af = float(profundidade.get())
     ae = float(largura.get())
-    resistMat = 450#float(resistMat.get()) #450 é para o aço 1045
     rendimento = 0.7#float(rendimento.get())
 
-    return (pf * L * va**(x-1)/K) + (so * L/va) + (ce * af * ae * resistMat/(3600000000 * rendimento))
+    return (pf * L * va**(x-1)/K) + ((so/60) * L/va) + (ce * af * ae * resistMat * L/(60000 * rendimento))
 
 #retorna os valores de x e K pela equação de Taylor para desgaste
 def Taylor(tt1, va1, tt2, va2):
@@ -53,6 +59,7 @@ def MostraResultado():
     MostraTabela()
     MostraGrafico()
 
+
 #----------GUI----------
 #instancia de tk
 root = tk.Tk()
@@ -62,6 +69,9 @@ root.title("usina+")
 #---imagens de referencia---
 img1 = tk.PhotoImage(file="ref0.png")
 img2 = tk.PhotoImage(file="ref1.png")
+
+#---matriz com resistencias dos materiais---
+listaDeMateriais = [["aço 1045", "450"], ["ferro fundido", "750"]]
 
 #---frames---
 frameDados = tk.Label(root)
@@ -84,7 +94,7 @@ frameTabela.grid(row=0, column=1)
 
 #---elementos da frameImagem---
 labelImagem = tk.Label(frameImagem, image=img1)
-labelImagem.pack()
+labelImagem.grid(row=0, column=0)
 
 #---elementos de frameDados1---
 tipoUsinagem = tk.StringVar()
@@ -95,6 +105,12 @@ fresamento.pack(anchor=tk.W)
 
 furacao = tk.Radiobutton(frameDados1, text="furação", variable=tipoUsinagem, value="furacao")
 furacao.pack(anchor=tk.W)
+
+tipoMaterial = tk.StringVar()
+tipoMaterial.set("aço 1045")
+
+dropMateriais = tk.OptionMenu(frameDados1, tipoMaterial, "aço 1045", "ferro fundido")
+dropMateriais.pack(anchor=tk.W)
 
 #---elementos de frameDados2---
 label1 = tk.Label(frameDados2, text="af(m):")
@@ -136,8 +152,6 @@ label8 = tk.Label(frameDados2, text="vel. avanço 2(m/min):")
 label8.grid(row=3, column=2)
 va2 = tk.Entry(frameDados2, width=10)
 va2.grid(row=3, column=3)
-
-
 
 #---elementos da frameValores---
 label9 = tk.Label(frameValores, text="vel. de avanço(m/min):")

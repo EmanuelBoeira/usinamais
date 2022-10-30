@@ -38,10 +38,16 @@ def MostraGrafico():
     plt.show()
 
 def MostraTabela():
+    labelVa = tk.Label(frameTabela, text="vel. avanço(m/min)")
+    labelVa.grid(row=0, column=0, padx=10)
+    labelCusto = tk.Label(frameTabela, text="custo(R$)")
+    labelCusto.grid(row=0, column=1, padx=10)
+
     for i in range(int(min.get()), int(max.get()), 10):
-        texto = "vel. avanço: "+ str(i) + "custo: " + str(C(i))
-        labelResultado = tk.Label(frameTabela, text=texto)
-        labelResultado.pack()
+        labelResultadoVa = tk.Label(frameTabela, text=str(i))
+        labelResultadoVa.grid(row=i+1, column=0, padx=10)
+        labelResultadoCusto = tk.Label(frameTabela, text=str(C(i)))
+        labelResultadoCusto.grid(row=i+1, column=1, padx=10)
 
 def MostraResultado():
     MostraTabela()
@@ -58,20 +64,23 @@ img1 = tk.PhotoImage(file="ref0.png")
 img2 = tk.PhotoImage(file="ref1.png")
 
 #---frames---
-frameImagem = tk.Label(root)
+frameDados = tk.Label(root)
+frameDados.grid(row=0, column=0)
+
+frameImagem = tk.Label(frameDados)
 frameImagem.grid(row=0, column=0)
 
-frameDados1 = tk.Label(root)
-frameDados1.grid(row=1, column=0)
+frameDados1 = tk.Label(frameDados)
+frameDados1.grid(row=1, column=0, pady=20)
 
-frameDados2 = tk.Label(root)
-frameDados2.grid(row=2, column=0)
+frameDados2 = tk.Label(frameDados)
+frameDados2.grid(row=2, column=0, pady=20)
 
-frameValores = tk.Label(root)
-frameValores.grid(row=0, column=1)
+frameValores = tk.Label(frameDados)
+frameValores.grid(row=3, column=0, pady=20)
 
 frameTabela = tk.Label(root)
-frameTabela.grid(row=2, column=1)
+frameTabela.grid(row=0, column=1)
 
 #---elementos da frameImagem---
 labelImagem = tk.Label(frameImagem, image=img1)
@@ -128,8 +137,7 @@ label8.grid(row=3, column=2)
 va2 = tk.Entry(frameDados2, width=10)
 va2.grid(row=3, column=3)
 
-botaoGrafico = tk.Button(frameDados2, text="gerar resultados", command=MostraResultado)
-botaoGrafico.grid(row=4, column=3)
+
 
 #---elementos da frameValores---
 label9 = tk.Label(frameValores, text="vel. de avanço(m/min):")
@@ -143,6 +151,9 @@ label10.grid(row=1, column=1)
 
 max = tk.Entry(frameValores, width=10)
 max.grid(row=1, column=2)
+
+botaoGrafico = tk.Button(frameValores, text="gerar resultados", command=MostraResultado)
+botaoGrafico.grid(row=2, column=1, pady=10)
 
 #---loop---
 root.mainloop()

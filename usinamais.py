@@ -63,6 +63,7 @@ def MostraResultado():
 #----------GUI----------
 #instancia de tk
 root = tk.Tk()
+#icone do app
 #root.iconbitmap("usinamais.ico")
 root.title("usina+")
 
